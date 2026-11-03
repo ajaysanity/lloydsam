@@ -1,6 +1,6 @@
 "use server";
 
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient } from "@/lib/supabase-auth/server";
 import { type RsvpFormState, MAX_ADDITIONAL_GUESTS } from "@/types/rsvp";
 
 const MAX_NAME = 200;

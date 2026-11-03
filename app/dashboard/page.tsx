@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient } from "@/lib/supabase-auth/server";
 import type { RsvpGuestRow, RsvpWithGuests } from "@/types/dashboard-rsvp";
 
 function formatDate(iso: string) {

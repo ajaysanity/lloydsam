@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { createSupabaseBrowserClient } from "@/lib/supabase-auth/client";
 
 const inputClassName =
   "w-full px-4 py-3 text-sm font-sans outline-none transition-colors duration-200 rounded-sm border border-[rgba(59,110,165,0.25)] focus:border-[var(--blue-primary)]";
