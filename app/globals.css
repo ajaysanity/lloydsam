@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf6f0;
+  --foreground: #2c2c2c;
+  --blue-primary: #3b6ea5;
+  --blue-secondary: #2a5080;
+  --blue-light: #d6e8f7;
+  --blue-pale: #eaf3fb;
+  --cream: #faf6f0;
+  --cream-dark: #f0ebe2;
+  --gold-accent: #c8a96e;
+  --gold-light: #e8d5a3;
+  --text-dark: #2c2c2c;
+  --text-muted: #6b7280;
+
+  --font-script: var(--font-great-vibes);
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-lato);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-blue-primary: var(--blue-primary);
+  --color-blue-secondary: var(--blue-secondary);
+  --color-blue-light: var(--blue-light);
+  --color-blue-pale: var(--blue-pale);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+  --color-gold-accent: var(--gold-accent);
+  --color-gold-light: var(--gold-light);
+  --font-script: var(--font-great-vibes);
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-lato);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-lato), Georgia, sans-serif;
+  overflow-x: hidden;
+}
+
+.font-script {
+  font-family: var(--font-great-vibes), cursive;
+}
+
+.font-serif {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.font-sans {
+  font-family: var(--font-lato), sans-serif;
+}
+
+.section-divider {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold-accent), transparent);
+  margin: 0 auto;
+}
+
+.floral-border-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200'%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 10;
+}

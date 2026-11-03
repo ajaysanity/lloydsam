@@ -1,0 +1,272 @@
+"use client";
+
+import { useState, useCallback } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { Heart, Flower2, Gem, Sparkles, Star, Camera, ImageIcon, Ribbon } from "lucide-react";
+
+/* ── Scattered icon background ──────────────────────────────── */
+const BG_ICONS = [
+  { Icon: Camera,    top: "2%",  left: "1%",   size: 48, rotate: -12, opacity: 0.22 },
+  { Icon: Heart,     top: "3%",  left: "20%",  size: 42, rotate: 8,   opacity: 0.24 },
+  { Icon: Flower2,   top: "1%",  left: "45%",  size: 40, rotate: -5,  opacity: 0.22 },
+  { Icon: Sparkles,  top: "3%",  left: "68%",  size: 38, rotate: 16,  opacity: 0.22 },
+  { Icon: Gem,       top: "2%",  left: "88%",  size: 44, rotate: -10, opacity: 0.20 },
+  { Icon: ImageIcon, top: "16%", left: "0%",   size: 38, rotate: 20,  opacity: 0.20 },
+  { Icon: Ribbon,    top: "18%", left: "94%",  size: 42, rotate: -14, opacity: 0.22 },
+  { Icon: Star,      top: "30%", left: "3%",   size: 34, rotate: 32,  opacity: 0.20 },
+  { Icon: Heart,     top: "32%", left: "92%",  size: 44, rotate: -8,  opacity: 0.24 },
+  { Icon: Flower2,   top: "46%", left: "1%",   size: 48, rotate: 14,  opacity: 0.22 },
+  { Icon: Camera,    top: "48%", left: "93%",  size: 40, rotate: 10,  opacity: 0.20 },
+  { Icon: Sparkles,  top: "60%", left: "4%",   size: 38, rotate: -20, opacity: 0.22 },
+  { Icon: Gem,       top: "62%", left: "91%",  size: 36, rotate: 6,   opacity: 0.20 },
+  { Icon: Star,      top: "74%", left: "2%",   size: 34, rotate: 24,  opacity: 0.20 },
+  { Icon: Ribbon,    top: "76%", left: "90%",  size: 44, rotate: -16, opacity: 0.22 },
+  { Icon: Heart,     top: "86%", left: "6%",   size: 46, rotate: -6,  opacity: 0.24 },
+  { Icon: Flower2,   top: "88%", left: "86%",  size: 40, rotate: 18,  opacity: 0.22 },
+  { Icon: ImageIcon, top: "94%", left: "24%",  size: 36, rotate: -10, opacity: 0.20 },
+  { Icon: Camera,    top: "95%", left: "56%",  size: 42, rotate: 12,  opacity: 0.20 },
+  { Icon: Sparkles,  top: "93%", left: "76%",  size: 38, rotate: -4,  opacity: 0.22 },
+] as const;
+
+function IconBackground() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      {BG_ICONS.map(({ Icon, top, left, size, rotate, opacity }, i) => (
+        <span
+          key={i}
+          className="absolute"
+          style={{ top, left, opacity, transform: `rotate(${rotate}deg)`, color: "var(--blue-primary)" }}
+        >
+          <Icon size={size} strokeWidth={1} />
+        </span>
+      ))}
+    </div>
+  );
+}
+
+const images = [
+  "/gallery/1.JPG",
+  "/gallery/2.JPEG",
+  "/gallery/3.JPEG",
+  "/gallery/3.JPG",
+  "/gallery/4.JPG",
+  "/gallery/5.JPG",
+  "/gallery/6.jpg",
+  "/gallery/7.JPG",
+  "/gallery/8.JPG",
+  "/gallery/9.JPG",
+  "/gallery/10.JPG",
+  "/gallery/11.JPG",
+  "/gallery/12.jpg",
+  "/gallery/13.JPG",
+  "/gallery/14.JPG",
+  "/gallery/15.JPEG",
+  "/gallery/16.jpg",
+  "/gallery/17.jpg",
+  "/gallery/18.jpeg",
+  "/gallery/date1.jpg",
+  "/gallery/forever.jpg",
+  "/gallery/proposal.jpg",
+];
+
+interface LightboxProps {
+  src: string;
+  index: number;
+  total: number;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+}
+
+function Lightbox({ src, index, total, onClose, onPrev, onNext }: LightboxProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.92)" }}
+      onClick={onClose}
+    >
+      <button
+        className="absolute top-4 right-5 text-white text-3xl font-light leading-none hover:opacity-70 transition-opacity"
+        onClick={onClose}
+        aria-label="Close"
+      >
+        ×
+      </button>
+      <button
+        className="absolute left-4 text-white text-4xl font-thin hover:opacity-70 transition-opacity z-10 p-2"
+        onClick={(e) => { e.stopPropagation(); onPrev(); }}
+        aria-label="Previous"
+      >
+        ‹
+      </button>
+      <motion.div
+        key={src}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.2 }}
+        className="relative max-w-5xl max-h-screen w-full mx-14 my-8"
+        onClick={(e) => e.stopPropagation()}
+        style={{ aspectRatio: "4/3" }}
+      >
+        <Image
+          src={src}
+          alt={`Wedding photo ${index + 1}`}
+          fill
+          className="object-contain"
+          sizes="90vw"
+          priority
+        />
+      </motion.div>
+
+      <button
+        className="absolute right-4 text-white text-4xl font-thin hover:opacity-70 transition-opacity z-10 p-2"
+        onClick={(e) => { e.stopPropagation(); onNext(); }}
+        aria-label="Next"
+      >
+        ›
+      </button>
+
+      <div
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 font-sans text-xs tracking-widest"
+        style={{ color: "rgba(255,255,255,0.5)" }}
+      >
+        {index + 1} / {total}
+      </div>
+    </motion.div>
+  );
+}
+
+export default function Gallery() {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const openLightbox = useCallback((index: number) => setActiveIndex(index), []);
+  const closeLightbox = useCallback(() => setActiveIndex(null), []);
+
+  const goNext = useCallback(() => {
+    setActiveIndex((prev) => (prev === null ? 0 : (prev + 1) % images.length));
+  }, []);
+
+  const goPrev = useCallback(() => {
+    setActiveIndex((prev) => (prev === null ? 0 : (prev - 1 + images.length) % images.length));
+  }, []);
+
+  const col2A = images.filter((_, i) => i % 2 === 0);
+  const col2B = images.filter((_, i) => i % 2 === 1);
+  const col3A = images.filter((_, i) => i % 3 === 0);
+  const col3B = images.filter((_, i) => i % 3 === 1);
+  const col3C = images.filter((_, i) => i % 3 === 2);
+
+  function GalleryColumn({ col, colIndex, cols, mobile }: { col: string[]; colIndex: number; cols: number; mobile: boolean }) {
+    return (
+      <div className={`flex flex-col ${mobile ? "gap-3" : "gap-4"}`}>
+        {col.map((src, rowIndex) => {
+          const globalIndex = rowIndex * cols + colIndex;
+          const isTall = (colIndex === 0 && rowIndex % 2 === 0) || (colIndex === 1 && rowIndex % 2 === 1);
+          return (
+            <motion.div
+              key={src}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: rowIndex * 0.05 + colIndex * 0.08 }}
+              className="relative overflow-hidden rounded-sm cursor-pointer group shadow-md"
+              style={{ height: mobile
+                ? (isTall ? "clamp(160px, 38vw, 240px)" : "clamp(120px, 28vw, 180px)")
+                : (isTall ? "clamp(180px, 26vw, 320px)" : "clamp(140px, 20vw, 240px)")
+              }}
+              onClick={() => openLightbox(globalIndex < images.length ? globalIndex : images.indexOf(src))}
+            >
+              <Image
+                src={src}
+                alt={`Wedding photo ${globalIndex + 1}`}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes={mobile ? "50vw" : "33vw"}
+              />
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                style={{ background: "rgba(59,110,165,0.35)" }}
+              >
+                <svg width="32" height="32" fill="none" viewBox="0 0 32 32">
+                  <circle cx="16" cy="16" r="15" stroke="white" strokeWidth="1.5" />
+                  <path d="M10 16h12M16 10v12" stroke="white" strokeWidth="1.5" />
+                </svg>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  return (
+    <section id="gallery" className="relative py-8 overflow-hidden" style={{ background: "var(--blue-pale)" }}>
+      <IconBackground />
+      <div className="relative z-10 max-w-6xl mx-auto px-6">
+        <div className="text-center mb-14">
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="font-serif text-sm tracking-[0.3em] uppercase mb-3"
+            style={{ color: "var(--gold-accent)" }}
+          >
+            Captured moments
+          </motion.p>
+
+          <motion.h2
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="font-script"
+            style={{ fontSize: "clamp(2.5rem, 6vw, 4.5rem)", color: "var(--blue-primary)" }}
+          >
+            Our Gallery
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="section-divider mt-6"
+          />
+        </div>
+
+        {/* Mobile: 2 columns */}
+        <div className="grid grid-cols-2 gap-3 md:hidden">
+          <GalleryColumn col={col2A} colIndex={0} cols={2} mobile />
+          <GalleryColumn col={col2B} colIndex={1} cols={2} mobile />
+        </div>
+
+        {/* Desktop: 3 columns */}
+        <div className="hidden md:grid md:grid-cols-3 md:gap-4">
+          <GalleryColumn col={col3A} colIndex={0} cols={3} mobile={false} />
+          <GalleryColumn col={col3B} colIndex={1} cols={3} mobile={false} />
+          <GalleryColumn col={col3C} colIndex={2} cols={3} mobile={false} />
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {activeIndex !== null && (
+          <Lightbox
+            src={images[activeIndex]}
+            index={activeIndex}
+            total={images.length}
+            onClose={closeLightbox}
+            onPrev={goPrev}
+            onNext={goNext}
+          />
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
