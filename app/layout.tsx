@@ -21,7 +21,13 @@ const lato = Lato({
   weight: ["300", "400", "700"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+function toSiteUrl(value: string | undefined) {
+  const raw = value?.trim() || "http://localhost:3000";
+  const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  return withProtocol.replace(/\/$/, "");
+}
+
+const siteUrl = toSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
