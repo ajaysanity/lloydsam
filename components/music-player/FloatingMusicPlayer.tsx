@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 
-const AUDIO_SRC = "/audio/bg-song.mp3";
+const AUDIO_SRC = "/audio/bg_song.mp3";
 
 function unlockSound(el: HTMLAudioElement) {
   el.muted = false;
@@ -123,7 +123,7 @@ export default function FloatingMusicPlayer() {
               color: "var(--text-muted)",
             }}
           >
-            Add MP3: <span style={{ color: "var(--blue-secondary)" }}>public/audio/bg-song.mp3</span>
+            Add MP3: <span style={{ color: "var(--blue-secondary)" }}>public/audio/bg_song.mp3</span>
           </div>
         ) : (
           <div
