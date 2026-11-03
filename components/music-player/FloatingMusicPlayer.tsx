@@ -5,9 +5,10 @@ import { Pause, Play } from "lucide-react";
 
 const AUDIO_SRC = "/audio/bg_song.mp3";
 
-function unlockSound(el: HTMLAudioElement) {
+function playAudible(el: HTMLAudioElement) {
   el.muted = false;
-  void el.play().catch(() => {});
+  el.volume = 0.65;
+  return el.play();
 }
 
 export default function FloatingMusicPlayer() {
@@ -17,18 +18,19 @@ export default function FloatingMusicPlayer() {
   const [duration, setDuration] = useState(0);
   const [loadError, setLoadError] = useState(false);
   const progressRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<HTMLDivElement>(null);
 
   const pct = duration > 0 ? (current / duration) * 100 : 0;
 
   const togglePlay = useCallback(() => {
     const el = audioRef.current;
     if (!el || loadError) return;
-    if (playing) {
+    if (!el.paused && !el.muted) {
       el.pause();
     } else {
-      unlockSound(el);
+      void playAudible(el).catch(() => {});
     }
-  }, [playing, loadError]);
+  }, [loadError]);
 
   useEffect(() => {
     const el = audioRef.current;
@@ -48,36 +50,38 @@ export default function FloatingMusicPlayer() {
     el.addEventListener("pause", onPause);
     el.addEventListener("error", onErr);
 
-    el.volume = 0.65;
+    let armed = false;
+    const gestureEvents = ["pointerdown", "touchstart", "keydown"] as const;
 
-    const tryAutoplay = async () => {
-      el.muted = false;
-      try {
-        await el.play();
-        return;
-      } catch {
-        /* blocked: start muted so playback runs immediately */
-      }
-      el.muted = true;
-      try {
-        await el.play();
-      } catch {
-        /* ignore */
-      }
+    const disarm = () => {
+      armed = false;
+      gestureEvents.forEach((type) => document.removeEventListener(type, onGesture, true));
     };
 
-    const runWhenReady = () => {
-      void tryAutoplay();
+    const onGesture = (event: Event) => {
+      if (event.target instanceof Node && playerRef.current?.contains(event.target)) return;
+      void playAudible(el).then(disarm).catch(() => {});
     };
 
-    if (el.readyState >= 2) runWhenReady();
-    else el.addEventListener("canplay", runWhenReady, { once: true });
-
-    const onFirstGesture = () => {
-      if (el.muted) unlockSound(el);
+    const arm = () => {
+      if (armed) return;
+      armed = true;
+      gestureEvents.forEach((type) => document.addEventListener(type, onGesture, true));
     };
-    document.addEventListener("pointerdown", onFirstGesture, { passive: true, capture: true });
-    document.addEventListener("touchstart", onFirstGesture, { passive: true, capture: true });
+
+    const tryAutoplay = () => {
+      if (!el.paused && !el.muted) return;
+      void playAudible(el)
+        .then(disarm)
+        .catch((err: unknown) => {
+          const blocked = err instanceof DOMException && err.name === "NotAllowedError";
+          if (!blocked && el.readyState < 2) return;
+          arm();
+        });
+    };
+
+    tryAutoplay();
+    el.addEventListener("canplay", tryAutoplay);
 
     return () => {
       el.removeEventListener("timeupdate", onTime);
@@ -86,9 +90,8 @@ export default function FloatingMusicPlayer() {
       el.removeEventListener("play", onPlay);
       el.removeEventListener("pause", onPause);
       el.removeEventListener("error", onErr);
-      el.removeEventListener("canplay", runWhenReady);
-      document.removeEventListener("pointerdown", onFirstGesture, { capture: true });
-      document.removeEventListener("touchstart", onFirstGesture, { capture: true });
+      el.removeEventListener("canplay", tryAutoplay);
+      disarm();
     };
   }, []);
 
@@ -97,7 +100,7 @@ export default function FloatingMusicPlayer() {
       const el = audioRef.current;
       const bar = progressRef.current;
       if (!el || !bar || !duration || loadError) return;
-      if (el.muted) unlockSound(el);
+      if (el.paused || el.muted) void playAudible(el).catch(() => {});
       const rect = bar.getBoundingClientRect();
       const x = Math.min(Math.max(0, clientX - rect.left), rect.width);
       el.currentTime = (x / rect.width) * duration;
@@ -110,6 +113,7 @@ export default function FloatingMusicPlayer() {
       <audio ref={audioRef} src={AUDIO_SRC} loop playsInline preload="auto" />
 
       <div
+        ref={playerRef}
         className="fixed left-1/2 top-3 z-40 w-[min(100%-1rem,14rem)] -translate-x-1/2 sm:top-4 sm:w-[min(100%-1.5rem,16rem)]"
         role="region"
         aria-label="Background music"
