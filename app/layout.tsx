@@ -31,11 +31,11 @@ const siteUrl = toSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "You're Invited — Lloyd & Sam",
+  title: "You're Invited — Lloyd & Sam · December 29, 2026",
   description:
     "We're getting married on December 29, 2026. Open our invitation for details, RSVP, and everything you need to celebrate with us.",
   openGraph: {
-    title: "You're Invited — Lloyd & Sam",
+    title: "You're Invited — Lloyd & Sam · December 29, 2026",
     description:
       "We're getting married on December 29, 2026. Open our invitation for details and RSVP.",
     type: "website",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "You're Invited — Lloyd & Sam",
+    title: "You're Invited — Lloyd & Sam · December 29, 2026",
     description:
       "We're getting married on December 29, 2026. Open our invitation for details and RSVP.",
     images: ["/gallery/invited.jpg"],
