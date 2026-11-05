@@ -318,10 +318,10 @@ export default function CountdownTimer() {
 
             <motion.p
               {...fadeUp(0.5)}
-              className="mt-10! max-w-xs font-serif italic leading-relaxed"
+              className="mt-10! max-w-md font-serif italic leading-relaxed"
               style={{ fontSize: "clamp(0.88rem, 1.4vw, 1rem)", color: "rgba(26,48,96,0.38)", letterSpacing: "0.02em" }}
             >
-              &ldquo;Two souls, one heart, forever together.&rdquo;
+              &ldquo;A love written by God, a promise made for a lifetime.&rdquo;
             </motion.p>
           </div>
 

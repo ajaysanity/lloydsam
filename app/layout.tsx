@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/gallery/forever.jpg",
-        width: 853,
-        height: 1280,
+        url: "/gallery/invited.jpg",
+        width: 3281,
+        height: 1875,
         alt: "Lloyd and Sam",
       },
     ],
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     title: "You're Invited — Lloyd & Sam",
     description:
       "We're getting married on December 29, 2026. Open our invitation for details and RSVP.",
-    images: ["/gallery/forever.jpg"],
+    images: ["/gallery/invited.jpg"],
   },
 };
 

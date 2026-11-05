@@ -52,6 +52,8 @@ interface Milestone {
   title: string;
   description: string;
   image: string;
+  width: number;
+  height: number;
   side: "left" | "right";
   icon: React.ElementType;
   accent: string;
@@ -59,21 +61,25 @@ interface Milestone {
 
 const milestones: Milestone[] = [
   {
-    year: "2018",
+    year: "2014",
     title: "First Meeting",
     description:
       "We meet in Grade 9 at San Jose National High School. It all started with our friends' playful teasing. Little did we know, those simple moments would lead us to a love story of our own.",
     image: "/gallery/first.png",
+    width: 421,
+    height: 553,
     side: "left",
     icon: MapPin,
     accent: "#8fafc9",
   },
   {
-    year: "2023",
+    year: "2015",
     title: "First Dance",
     description:
       "On prom night, we shared our first dance, simply enjoying the music and each other's company. What felt like an ordinary moments became a memory close to our hearts, a little glimpse of the beautiful love story waiting to unfold.",
     image: "/gallery/date1.jpg",
+    width: 1070,
+    height: 803,
     side: "right",
     icon: Heart,
     accent: "#c9848a",
@@ -84,6 +90,8 @@ const milestones: Milestone[] = [
     description:
       "It was Christmas Day, and what began as a simple exchange gift turned into a moment straight from our hearts. Surrounded by his family, Lloyd surprised me with a proposal I never saw coming. In the warmth of Christmas, one heartfelt question became the sweetest promise of forever.",
     image: "/gallery/proposal.jpg",
+    width: 1290,
+    height: 914,
     side: "left",
     icon: Gem,
     accent: "#b79a68",
@@ -94,6 +102,8 @@ const milestones: Milestone[] = [
     description:
       "From the innocence of young love to a lifetime of shared dreams, twelve years have brought us to this beautiful moment. Our next chapter begins with a promise of endless love.",
     image: "/images/forever.jpg",
+    width: 853,
+    height: 1280,
     side: "right",
     icon: Heart,
     accent: "#8fad90",
@@ -200,13 +210,13 @@ function MilestoneCard({ milestone, index }: { milestone: Milestone; index: numb
             {milestone.title}
           </h3>
 
-          {/* Image — 16:9 on mobile keeps it compact */}
-          <div className="relative mb-2.5 w-full overflow-hidden rounded-[4px]" style={{ aspectRatio: "16/9" }}>
+          <div className="relative mb-2.5 w-full overflow-hidden rounded-[4px]">
             <Image
               src={milestone.image}
               alt={milestone.title}
-              fill
-              className="object-cover object-top transition-transform duration-700 hover:scale-105"
+              width={milestone.width}
+              height={milestone.height}
+              className="block h-auto w-full transition-transform duration-700 hover:scale-105"
               sizes="(max-width: 768px) 80vw"
             />
             <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(26,48,96,0.22) 0%, transparent 50%)" }} />

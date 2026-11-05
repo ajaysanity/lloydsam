@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 
-const AUDIO_SRC = "/audio/bg_song.mp3";
+const AUDIO_SRC = "/audio/kay_tagal_kitang_hinintay_spongecole.mp3";
 
 function playAudible(el: HTMLAudioElement) {
   el.muted = false;
@@ -114,7 +114,7 @@ export default function FloatingMusicPlayer() {
 
       <div
         ref={playerRef}
-        className="fixed left-1/2 top-3 z-40 w-[min(100%-1rem,14rem)] -translate-x-1/2 sm:top-4 sm:w-[min(100%-1.5rem,16rem)]"
+        className="fixed left-1/2 top-3 z-40 w-[min(100%-1rem,22rem)] -translate-x-1/2 sm:top-4 sm:w-[min(100%-1.5rem,26rem)]"
         role="region"
         aria-label="Background music"
       >
@@ -127,7 +127,7 @@ export default function FloatingMusicPlayer() {
               color: "var(--text-muted)",
             }}
           >
-            Add MP3: <span style={{ color: "var(--blue-secondary)" }}>public/audio/bg_song.mp3</span>
+            Add MP3: <span style={{ color: "var(--blue-secondary)" }}>public/audio/kay_tagal_kitang_hinintay_spongecole.mp3</span>
           </div>
         ) : (
           <div
@@ -161,7 +161,7 @@ export default function FloatingMusicPlayer() {
                     textShadow: "0 1px 2px rgba(255,255,255,0.85)",
                   }}
                 >
-                  Bawat Daan
+                  Kay Tagal Kitang Hinintay
                 </span>
                 <span
                   className="font-serif"
@@ -172,7 +172,7 @@ export default function FloatingMusicPlayer() {
                   }}
                 >
                   {" "}
-                  · Ebe Dancel
+                  · Sponge Cola
                 </span>
               </p>
             </div>
