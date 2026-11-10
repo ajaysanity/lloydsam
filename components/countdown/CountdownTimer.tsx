@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Gem, Wine, Music2, UtensilsCrossed, Car,
+  Gem, Martini, Music2, UtensilsCrossed, Car,
   Heart, Star, Flower2, Sparkles, Ribbon,
+  Church, Camera, PartyPopper,
 } from "lucide-react";
 
 interface TimeLeft {
@@ -122,15 +123,15 @@ function GoldRule() {
 
 /* ── Timeline ───────────────────────────────────────────────── */
 const EVENTS = [
-  { time: "1:00 PM", label: "Guest Arrival",       icon: Car,             side: "right", accent: "#8fafc9", bg: "rgba(143,175,201,0.12)" },
-  { time: "2:00 PM", label: "Ceremony",            icon: Gem,             side: "left",  accent: "#b79a68", bg: "rgba(183,154,104,0.12)" },
-  { time: "3:00 PM", label: "Photo Op",            icon: Sparkles,        side: "right", accent: "#c9848a", bg: "rgba(201,132,138,0.12)" },
-  { time: "4:00 PM", label: "Cocktails",           icon: Wine,            side: "left",  accent: "#8fad90", bg: "rgba(143,173,144,0.12)" },
-  { time: "4:30 PM", label: "Grand Entrance",      icon: Flower2,         side: "right", accent: "#b79a68", bg: "rgba(183,154,104,0.12)" },
-  { time: "5:00 PM", label: "First Dance",         icon: Music2,          side: "left",  accent: "#a58fc9", bg: "rgba(165,143,201,0.12)" },
-  { time: "5:30 PM", label: "Dinner Time",         icon: UtensilsCrossed, side: "right", accent: "#8fafc9", bg: "rgba(143,175,201,0.12)" },
-  { time: "6:30 PM", label: "Wedding Traditions",  icon: Heart,           side: "left",  accent: "#b79a68", bg: "rgba(183,154,104,0.12)" },
-  { time: "7:00 PM", label: "Party Time",          icon: Star,            side: "right", accent: "#c9848a", bg: "rgba(201,132,138,0.12)" },
+  { time: "1:00 PM", label: "Guest Arrival",      icon: Car,             side: "right", accent: "#8fafc9", bg: "rgba(143,175,201,0.12)" },
+  { time: "2:00 PM", label: "Ceremony",           icon: Church,          side: "left",  accent: "#b79a68", bg: "rgba(183,154,104,0.12)" },
+  { time: "3:00 PM", label: "Photo Op",           icon: Camera,          side: "right", accent: "#c9848a", bg: "rgba(201,132,138,0.12)" },
+  { time: "4:00 PM", label: "Cocktails",          icon: Martini,         side: "left",  accent: "#8fad90", bg: "rgba(143,173,144,0.12)" },
+  { time: "4:30 PM", label: "Grand Entrance",     icon: Flower2,         side: "right", accent: "#b79a68", bg: "rgba(183,154,104,0.12)" },
+  { time: "5:00 PM", label: "First Dance",        icon: Music2,          side: "left",  accent: "#a58fc9", bg: "rgba(165,143,201,0.12)" },
+  { time: "5:30 PM", label: "Dinner Time",        icon: UtensilsCrossed, side: "right", accent: "#8fafc9", bg: "rgba(143,175,201,0.12)" },
+  { time: "6:30 PM", label: "Wedding Traditions", icon: Heart,           side: "left",  accent: "#b79a68", bg: "rgba(183,154,104,0.12)" },
+  { time: "7:00 PM", label: "Party Time",         icon: PartyPopper,     side: "right", accent: "#c9848a", bg: "rgba(201,132,138,0.12)" },
 ] as const;
 
 function TimelineEvent({

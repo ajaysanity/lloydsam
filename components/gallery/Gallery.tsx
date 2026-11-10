@@ -68,6 +68,20 @@ const images = [
   "/gallery/date1.jpg",
   "/gallery/forever.jpg",
   "/gallery/proposal.jpg",
+  "/gallery/NEL06273.jpg",
+  "/gallery/NEL06278.jpg",
+  "/gallery/NEL06629.jpg",
+  "/gallery/NEL06634.jpg",
+  "/gallery/NEL06667.jpg",
+  "/gallery/NEL06715.jpg",
+  "/gallery/NEL06915.jpg",
+  "/gallery/NEL06924.jpg",
+  "/gallery/NEL07027.jpg",
+  "/gallery/NEL07088.jpg",
+  "/gallery/NEL07329.jpg",
+  "/gallery/NEL07340.jpg",
+  "/gallery/NEL07429.jpg",
+  "/gallery/NEL07462.jpg",
 ];
 
 interface LightboxProps {
@@ -142,6 +156,67 @@ function Lightbox({ src, index, total, onClose, onPrev, onNext }: LightboxProps)
   );
 }
 
+const col2A = images.filter((_, i) => i % 2 === 0);
+const col2B = images.filter((_, i) => i % 2 === 1);
+const col3A = images.filter((_, i) => i % 3 === 0);
+const col3B = images.filter((_, i) => i % 3 === 1);
+const col3C = images.filter((_, i) => i % 3 === 2);
+
+function GalleryColumn({
+  col,
+  colIndex,
+  cols,
+  mobile,
+  onOpen,
+}: {
+  col: string[];
+  colIndex: number;
+  cols: number;
+  mobile: boolean;
+  onOpen: (index: number) => void;
+}) {
+  return (
+    <div className={`flex flex-col ${mobile ? "gap-3" : "gap-4"}`}>
+      {col.map((src, rowIndex) => {
+        const globalIndex = rowIndex * cols + colIndex;
+        const isTall = (colIndex === 0 && rowIndex % 2 === 0) || (colIndex === 1 && rowIndex % 2 === 1);
+        return (
+          <motion.div
+            key={src}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, delay: rowIndex * 0.05 + colIndex * 0.08 }}
+            className="relative overflow-hidden rounded-sm cursor-pointer group shadow-md"
+            style={{ height: mobile
+              ? (isTall ? "clamp(254px, 61.2vw, 380px)" : "clamp(191px, 44.4vw, 286px)")
+              : (isTall ? "clamp(286px, 42vw, 508px)" : "clamp(222px, 31.2vw, 380px)")
+            }}
+            onClick={() => onOpen(globalIndex < images.length ? globalIndex : images.indexOf(src))}
+          >
+            <Image
+              src={src}
+              alt={`Wedding photo ${globalIndex + 1}`}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes={mobile ? "50vw" : "33vw"}
+            />
+            <div
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+              style={{ background: "rgba(59,110,165,0.35)" }}
+            >
+              <svg width="32" height="32" fill="none" viewBox="0 0 32 32">
+                <circle cx="16" cy="16" r="15" stroke="white" strokeWidth="1.5" />
+                <path d="M10 16h12M16 10v12" stroke="white" strokeWidth="1.5" />
+              </svg>
+            </div>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Gallery() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -155,55 +230,6 @@ export default function Gallery() {
   const goPrev = useCallback(() => {
     setActiveIndex((prev) => (prev === null ? 0 : (prev - 1 + images.length) % images.length));
   }, []);
-
-  const col2A = images.filter((_, i) => i % 2 === 0);
-  const col2B = images.filter((_, i) => i % 2 === 1);
-  const col3A = images.filter((_, i) => i % 3 === 0);
-  const col3B = images.filter((_, i) => i % 3 === 1);
-  const col3C = images.filter((_, i) => i % 3 === 2);
-
-  function GalleryColumn({ col, colIndex, cols, mobile }: { col: string[]; colIndex: number; cols: number; mobile: boolean }) {
-    return (
-      <div className={`flex flex-col ${mobile ? "gap-3" : "gap-4"}`}>
-        {col.map((src, rowIndex) => {
-          const globalIndex = rowIndex * cols + colIndex;
-          const isTall = (colIndex === 0 && rowIndex % 2 === 0) || (colIndex === 1 && rowIndex % 2 === 1);
-          return (
-            <motion.div
-              key={src}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: rowIndex * 0.05 + colIndex * 0.08 }}
-              className="relative overflow-hidden rounded-sm cursor-pointer group shadow-md"
-              style={{ height: mobile
-                ? (isTall ? "clamp(160px, 38vw, 240px)" : "clamp(120px, 28vw, 180px)")
-                : (isTall ? "clamp(180px, 26vw, 320px)" : "clamp(140px, 20vw, 240px)")
-              }}
-              onClick={() => openLightbox(globalIndex < images.length ? globalIndex : images.indexOf(src))}
-            >
-              <Image
-                src={src}
-                alt={`Wedding photo ${globalIndex + 1}`}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes={mobile ? "50vw" : "33vw"}
-              />
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
-                style={{ background: "rgba(59,110,165,0.35)" }}
-              >
-                <svg width="32" height="32" fill="none" viewBox="0 0 32 32">
-                  <circle cx="16" cy="16" r="15" stroke="white" strokeWidth="1.5" />
-                  <path d="M10 16h12M16 10v12" stroke="white" strokeWidth="1.5" />
-                </svg>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-    );
-  }
 
   return (
     <section id="gallery" className="relative py-8 overflow-hidden" style={{ background: "var(--blue-pale)" }}>
@@ -243,15 +269,15 @@ export default function Gallery() {
 
         {/* Mobile: 2 columns */}
         <div className="grid grid-cols-2 gap-3 md:hidden">
-          <GalleryColumn col={col2A} colIndex={0} cols={2} mobile />
-          <GalleryColumn col={col2B} colIndex={1} cols={2} mobile />
+          <GalleryColumn col={col2A} colIndex={0} cols={2} mobile onOpen={openLightbox} />
+          <GalleryColumn col={col2B} colIndex={1} cols={2} mobile onOpen={openLightbox} />
         </div>
 
         {/* Desktop: 3 columns */}
         <div className="hidden md:grid md:grid-cols-3 md:gap-4">
-          <GalleryColumn col={col3A} colIndex={0} cols={3} mobile={false} />
-          <GalleryColumn col={col3B} colIndex={1} cols={3} mobile={false} />
-          <GalleryColumn col={col3C} colIndex={2} cols={3} mobile={false} />
+          <GalleryColumn col={col3A} colIndex={0} cols={3} mobile={false} onOpen={openLightbox} />
+          <GalleryColumn col={col3B} colIndex={1} cols={3} mobile={false} onOpen={openLightbox} />
+          <GalleryColumn col={col3C} colIndex={2} cols={3} mobile={false} onOpen={openLightbox} />
         </div>
       </div>
 

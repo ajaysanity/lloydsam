@@ -193,11 +193,11 @@ export default function Entourage() {
                 "Mrs. Normita Guerrero",
                 "Mrs. Edna Cajeta",
                 "Mrs. Cynthia Calabio",
-                "Mrs. Fe Gresham",
-                "Mrs. Joey Mingao",
+                "Ms. Fe Gresham",
+                "Ms. Joely Mingao",
                 "Mrs. Airene Catimbang",
                 "Mrs. Rosbie Asunio",
-                "Mrs. May Andales",
+                "Mrs. May Flor Andales",
                 "Mrs. Ailyn Alejandro",
               ]}
             />
@@ -246,24 +246,27 @@ export default function Entourage() {
           <div className="space-y-2">
             <SectionLabel>Groomsmen</SectionLabel>
             <NameList names={[
+              "Kim Llanes",
               "John Lloyd Domingo",
               "Dave Janairo",
               "Germon Feudo",
               "Emmanuel Tenorio",
               "Christian Jeriz Cortes",
+              "Marwin Santos",
               "Ivan Santos",
-              "Kim Llanes",
             ]} />
           </div>
           <div className="space-y-2">
             <SectionLabel>Bridesmaid</SectionLabel>
             <NameList names={[
+              "Lucille Mae Levantino",
               "Princess Jelian Mingao",
               "Alexdra Nicole Abejo",
               "Crizia Harvey Lopez",
               "Grace Ann Enero",
               "Yhanie Mingao",
               "Necie Estorgio",
+              "Andrea Macaburas",
             ]} />
           </div>
         </motion.div>

@@ -101,9 +101,9 @@ const milestones: Milestone[] = [
     title: "Forever Begins",
     description:
       "From the innocence of young love to a lifetime of shared dreams, twelve years have brought us to this beautiful moment. Our next chapter begins with a promise of endless love.",
-    image: "/images/forever.jpg",
-    width: 853,
-    height: 1280,
+    image: "/gallery/NEL07088.jpg",
+    width: 5561,
+    height: 3707,
     side: "right",
     icon: Heart,
     accent: "#8fad90",

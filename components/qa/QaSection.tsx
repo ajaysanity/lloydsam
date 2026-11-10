@@ -55,7 +55,7 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.6, delay, ease: "easeOut" as const },
 });
 
-const GUIDE_IMAGE = "/gallery/guide.jpg";
+const GUIDE_IMAGE = "/gallery/NEL07340.jpg";
 
 const ATTIRE_COLORS = [
   { name: "Cream", role: "Parents", color: "#f3e6b8" },
@@ -225,7 +225,7 @@ export default function QaSection() {
                 src={GUIDE_IMAGE}
                 alt="Lloyd and Sam"
                 fill
-                className="object-cover"
+                className="object-cover object-[center_12%]"
                 sizes="(max-width: 1024px) 100vw, 420px"
                 priority={false}
               />
