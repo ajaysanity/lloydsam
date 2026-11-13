@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 
 const AUDIO_SRC = "/audio/kay_tagal_kitang_hinintay_spongecole.mp3";
-const START_AT = 10;
+const START_AT = 12;
 
 function playAudible(el: HTMLAudioElement) {
   el.muted = false;
