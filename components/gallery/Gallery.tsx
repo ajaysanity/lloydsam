@@ -68,7 +68,6 @@ const images = [
   "/gallery/date1.jpg",
   "/gallery/forever.jpg",
   "/gallery/proposal.jpg",
-  "/gallery/NEL06273.jpg",
   "/gallery/NEL06278.jpg",
   "/gallery/NEL06629.jpg",
   "/gallery/NEL06634.jpg",
@@ -82,6 +81,105 @@ const images = [
   "/gallery/NEL07340.jpg",
   "/gallery/NEL07429.jpg",
   "/gallery/NEL07462.jpg",
+  "/gallery/NEL06288.jpg",
+  "/gallery/NEL06311.jpg",
+  "/gallery/NEL06324.jpg",
+  "/gallery/NEL06350.jpg",
+  "/gallery/NEL06417.jpg",
+  "/gallery/NEL06459.jpg",
+  "/gallery/NEL06468.jpg",
+  "/gallery/NEL06476.jpg",
+  "/gallery/NEL06482.jpg",
+  "/gallery/NEL06490.jpg",
+  "/gallery/NEL06493.jpg",
+  "/gallery/NEL06517.jpg",
+  "/gallery/NEL06522.jpg",
+  "/gallery/NEL06537.jpg",
+  "/gallery/NEL06543.jpg",
+  "/gallery/NEL06563.jpg",
+  "/gallery/NEL06633.jpg",
+  "/gallery/NEL06666.jpg",
+  "/gallery/NEL06710.jpg",
+  "/gallery/NEL06737.jpg",
+  "/gallery/NEL06755.jpg",
+  "/gallery/NEL06795.jpg",
+  "/gallery/NEL06826.jpg",
+  "/gallery/NEL06853.jpg",
+  "/gallery/NEL06863.jpg",
+  "/gallery/NEL06880.jpg",
+  "/gallery/NEL06893.jpg",
+  "/gallery/NEL06938.jpg",
+  "/gallery/NEL06974.jpg",
+  "/gallery/NEL06998.jpg",
+  "/gallery/NEL07005.jpg",
+  "/gallery/NEL07019.jpg",
+  "/gallery/NEL07024.jpg",
+  "/gallery/NEL07058.jpg",
+  "/gallery/NEL07073.jpg",
+  "/gallery/NEL07079.jpg",
+  "/gallery/NEL07094.jpg",
+  "/gallery/NEL07105.jpg",
+  "/gallery/NEL07116.jpg",
+  "/gallery/NEL07120.jpg",
+  "/gallery/NEL07154.jpg",
+  "/gallery/NEL07173.jpg",
+  "/gallery/NEL07185.jpg",
+  "/gallery/NEL07194.jpg",
+  "/gallery/NEL07201.jpg",
+  "/gallery/NEL07207.jpg",
+  "/gallery/NEL07209.jpg",
+  "/gallery/NEL07211.jpg",
+  "/gallery/NEL07215.jpg",
+  "/gallery/NEL07220.jpg",
+  "/gallery/NEL07224.jpg",
+  "/gallery/NEL07228.jpg",
+  "/gallery/NEL07233.jpg",
+  "/gallery/NEL07235.jpg",
+  "/gallery/NEL07238.jpg",
+  "/gallery/NEL07251.jpg",
+  "/gallery/NEL07256.jpg",
+  "/gallery/NEL07262.jpg",
+  "/gallery/NEL07267.jpg",
+  "/gallery/NEL07277.jpg",
+  "/gallery/NEL07282.jpg",
+  "/gallery/NEL07293.jpg",
+  "/gallery/NEL07301.jpg",
+  "/gallery/NEL07318.jpg",
+  "/gallery/NEL07327.jpg",
+  "/gallery/NEL07331.jpg",
+  "/gallery/NEL07335.jpg",
+  "/gallery/NEL07338.jpg",
+  "/gallery/NEL07347.jpg",
+  "/gallery/NEL07349.jpg",
+  "/gallery/NEL07355.jpg",
+  "/gallery/NEL07361.jpg",
+  "/gallery/NEL07367.jpg",
+  "/gallery/NEL07371.jpg",
+  "/gallery/NEL07374.jpg",
+  "/gallery/NEL07377.jpg",
+  "/gallery/NEL07382.jpg",
+  "/gallery/NEL07393.jpg",
+  "/gallery/NEL07395.jpg",
+  "/gallery/NEL07443.jpg",
+  "/gallery/NEL07453.jpg",
+  "/gallery/NEL07461.jpg",
+  "/gallery/NEL07529.jpg",
+  "/gallery/NEL07539.jpg",
+  "/gallery/NEL07556.jpg",
+  "/gallery/NEL07573.jpg",
+  "/gallery/NEL07589.jpg",
+  "/gallery/NEL07600.jpg",
+  "/gallery/NEL07606.jpg",
+  "/gallery/NEL07626.jpg",
+  "/gallery/NEL07646.jpg",
+  "/gallery/NEL07677.jpg",
+  "/gallery/NEL07685.jpg",
+  "/gallery/NEL07738.jpg",
+  "/gallery/NEL07784.jpg",
+  "/gallery/NEL07901.jpg",
+  "/gallery/NEL07927.jpg",
+  "/gallery/NEL07928.jpg",
+  "/gallery/NEL07929.jpg",
 ];
 
 interface LightboxProps {
@@ -179,7 +277,10 @@ function GalleryColumn({
     <div className={`flex flex-col ${mobile ? "gap-3" : "gap-4"}`}>
       {col.map((src, rowIndex) => {
         const globalIndex = rowIndex * cols + colIndex;
-        const isTall = (colIndex === 0 && rowIndex % 2 === 0) || (colIndex === 1 && rowIndex % 2 === 1);
+        const isTall = (colIndex + rowIndex) % 2 === 0;
+        const minHeight = mobile
+          ? (isTall ? "clamp(254px, 61.2vw, 380px)" : "clamp(191px, 44.4vw, 286px)")
+          : (isTall ? "clamp(286px, 42vw, 508px)" : "clamp(222px, 31.2vw, 380px)");
         return (
           <motion.div
             key={src}
@@ -188,10 +289,7 @@ function GalleryColumn({
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.5, delay: rowIndex * 0.05 + colIndex * 0.08 }}
             className="relative overflow-hidden rounded-sm cursor-pointer group shadow-md"
-            style={{ height: mobile
-              ? (isTall ? "clamp(254px, 61.2vw, 380px)" : "clamp(191px, 44.4vw, 286px)")
-              : (isTall ? "clamp(286px, 42vw, 508px)" : "clamp(222px, 31.2vw, 380px)")
-            }}
+            style={{ flex: "1 0 auto", minHeight }}
             onClick={() => onOpen(globalIndex < images.length ? globalIndex : images.indexOf(src))}
           >
             <Image

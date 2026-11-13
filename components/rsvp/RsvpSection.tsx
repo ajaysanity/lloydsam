@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useActionState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { submitRsvp } from "@/app/actions/submit-rsvp";
-import { rsvpInitialState, MAX_ADDITIONAL_GUESTS } from "@/types/rsvp";
+import { rsvpInitialState } from "@/types/rsvp";
 
 function SubmitButton({ pending }: { pending: boolean }) {
   return (
@@ -25,19 +25,12 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
   const [state, formAction, isPending] = useActionState(submitRsvp, rsvpInitialState);
   const showSuccess = state.ok;
   const [attendance, setAttendance] = useState("");
-  const [additionalGuests, setAdditionalGuests] = useState(0);
   const errorFields = new Set(state.errorFields ?? []);
   const fieldError = (key: string) => errorFields.has(key);
   const inputBorderClass = (key: string) =>
     fieldError(key)
       ? "border-2 border-red-600 focus:border-red-600"
       : "border border-[rgba(59,110,165,0.25)] focus:border-[var(--blue-primary)]";
-
-  useEffect(() => {
-    if (attendance === "no") {
-      setAdditionalGuests(0);
-    }
-  }, [attendance]);
 
   return (
     <motion.div
@@ -86,7 +79,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
               className="font-serif text-xs tracking-[0.3em] uppercase mb-2"
               style={{ color: "var(--gold-accent)" }}
             >
-              Kindly reply by on or before April 30, 2026
+              Kindly reply by on or before December 01, 2026
             </p>
             <h2
               className="font-script"
@@ -189,9 +182,10 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                 </select>
               </div>
 
-              {attendance === "no" || attendance === "" ? (
-                <input type="hidden" name="additional_guests" value="0" />
-              ) : (
+              <input type="hidden" name="additional_guests" value="0" />
+
+              {/* Additional guest count — paused for now
+              {attendance === "yes" ? (
                 <div>
                   <label
                     className="block font-sans text-xs tracking-widest uppercase mb-2"
@@ -207,13 +201,8 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                     id="rsvp-additional-guests"
                     name="additional_guests"
                     required
-                    value={additionalGuests}
-                    onChange={(e) => {
-                      const n = Number.parseInt(e.target.value, 10);
-                      setAdditionalGuests(Number.isFinite(n) ? Math.max(0, Math.min(MAX_ADDITIONAL_GUESTS, n)) : 0);
-                    }}
-                    aria-invalid={fieldError("additional_guests")}
-                    className={`${inputClassName} appearance-none cursor-pointer ${inputBorderClass("additional_guests")}`}
+                    defaultValue={0}
+                    className={`${inputClassName} appearance-none cursor-pointer`}
                     style={{
                       background: "var(--blue-pale)",
                       color: "var(--text-dark)",
@@ -223,34 +212,8 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                     <option value={1}>1 — Plus one (+1)</option>
                   </select>
                 </div>
-              )}
-
-              {attendance === "yes" && additionalGuests > 0
-                ? Array.from({ length: additionalGuests }, (_, i) => (
-                    <div key={i}>
-                      <label
-                        className="block font-sans text-xs tracking-widest uppercase mb-2"
-                        style={{ color: "var(--text-muted)" }}
-                        htmlFor={`rsvp-guest-name-${i}`}
-                      >
-                        Guest {i + 1} full name *
-                      </label>
-                      <input
-                        id={`rsvp-guest-name-${i}`}
-                        name={`guest_name_${i}`}
-                        type="text"
-                        required
-                        placeholder="Full name"
-                        aria-invalid={fieldError(`guest_name_${i}`)}
-                        className={`${inputClassName} ${inputBorderClass(`guest_name_${i}`)}`}
-                        style={{
-                          background: "var(--blue-pale)",
-                          color: "var(--text-dark)",
-                        }}
-                      />
-                    </div>
-                  ))
-                : null}
+              ) : null}
+              */}
 
               <div>
                 <label

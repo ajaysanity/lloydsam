@@ -101,9 +101,9 @@ const milestones: Milestone[] = [
     title: "Forever Begins",
     description:
       "From the innocence of young love to a lifetime of shared dreams, twelve years have brought us to this beautiful moment. Our next chapter begins with a promise of endless love.",
-    image: "/gallery/NEL07088.jpg",
-    width: 5561,
-    height: 3707,
+    image: "/gallery/forever_begins.jpg",
+    width: 1024,
+    height: 1434,
     side: "right",
     icon: Heart,
     accent: "#8fad90",
@@ -248,7 +248,14 @@ function StoryCard({ milestone, align }: { milestone: Milestone; align: "left" |
       }}
     >
       {/* Image */}
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4/3" }}>
+      <div
+        className="relative w-full overflow-hidden"
+        style={{
+          aspectRatio: milestone.image.endsWith("forever_begins.jpg")
+            ? `${milestone.width} / ${milestone.height}`
+            : "4 / 3",
+        }}
+      >
         <Image
           src={milestone.image}
           alt={milestone.title}
