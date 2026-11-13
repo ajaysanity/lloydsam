@@ -306,19 +306,22 @@ export default function QaSection() {
               <QrCodesBlock />
             </motion.div>
 
-            <motion.div {...fadeUp(0.26)}>
+            <motion.div {...fadeUp(0.26)} className="py-6 sm:py-8">
               <p
                 className="font-serif text-sm tracking-[0.3em] uppercase"
                 style={{ color: "var(--gold-accent)" }}
               >
                 Snap &amp; share
               </p>
-              <p
-                className="mx-auto mt-4 max-w-md font-sans text-sm leading-relaxed md:text-base lg:mx-0"
+              <div
+                className="mx-auto mt-5 flex max-w-md flex-col gap-3 font-sans text-sm leading-relaxed md:text-base lg:mx-0"
                 style={{ color: "var(--text-muted)" }}
               >
-                Please help us capture the unforgettable moments. Share and tag us on Facebook.
-              </p>
+                <p>Please help us capture the unforgettable moments!</p>
+                <p>Share and tag us using this hashtag:</p>
+                <p>#LloydFoundHisSpecialSAMone</p>
+                <p>#saSAManaKayLloyd</p>
+              </div>
             </motion.div>
           </div>
         </div>
