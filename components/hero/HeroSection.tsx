@@ -1,7 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useFitToHeight } from "@/hooks/useFitToHeight";
 
 /* ── Staggered fade-up helper ───────────────────────────────── */
 const fadeUp = (delay = 0) => ({
@@ -15,7 +17,11 @@ function CalligraphicHeart() {
   return (
     <div
       className="relative flex items-center justify-center"
-      style={{ width: "clamp(100px, 18vw, 220px)", height: "clamp(140px, 25vw, 310px)", flexShrink: 0 }}
+      style={{
+        width: "clamp(92px, min(18vw, calc((100vh - 720px) * 0.71)), 220px)",
+        height: "clamp(130px, min(25vw, calc(100vh - 720px)), 310px)",
+        flexShrink: 0,
+      }}
     >
       {/* Bloom ring */}
       <motion.div
@@ -101,9 +107,14 @@ function RsvpButton() {
    HERO SECTION
    ═══════════════════════════════════════════════════════════════ */
 export default function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const scale = useFitToHeight(sectionRef, contentRef);
+
   return (
     <section
-      className="relative min-h-screen lg:h-screen flex flex-col items-center justify-center overflow-hidden"
+      ref={sectionRef}
+      className="relative min-h-screen lg:h-screen lg:pt-16 lg:pb-6 flex flex-col items-center justify-center overflow-hidden"
       style={{ background: "linear-gradient(160deg, #faf7f2 0%, #f5f0e8 45%, #edf2f8 100%)" }}
     >
       {/* Paper-grain texture — very subtle depth */}
@@ -148,7 +159,11 @@ export default function HeroSection() {
       {/* ══════════════════════════════════════════════════════════
           CONTENT
           ══════════════════════════════════════════════════════════ */}
-      <div className="relative z-10 flex w-full flex-col items-center text-center px-4 py-8 lg:py-2">
+      <div
+        ref={contentRef}
+        className="relative z-10 flex w-full shrink-0 flex-col items-center text-center px-4 py-8 lg:py-2"
+        style={{ transform: `scale(${scale})`, transformOrigin: "center" }}
+      >
 
         {/* ── "we ♡ do" accent ── */}
         <motion.div
@@ -187,7 +202,7 @@ export default function HeroSection() {
 
         {/* ── NAMES: primary focal point (hierarchy 1) ── */}
         <motion.div
-          className="mt-8! lg:mt-2 flex flex-wrap items-baseline justify-center"
+          className="mt-8 flex flex-wrap items-baseline justify-center lg:mt-2!"
           style={{ gap: "clamp(0.4rem, 1.8vw, 1.1rem)" }}
           {...fadeUp(0.6)}
         >
@@ -226,7 +241,7 @@ export default function HeroSection() {
         </motion.div>
 
         {/* ── DATE BLOCK: hierarchy 2 ── */}
-        <motion.div className="flex my-4! lg:my-1 flex-col items-center" {...fadeUp(0.95)}>
+        <motion.div className="my-4 flex flex-col items-center lg:my-1!" {...fadeUp(0.95)}>
 
           {/* Month */}
           <p
@@ -244,7 +259,7 @@ export default function HeroSection() {
             />
             <time
               dateTime="2026-12-29"
-              className="font-serif font-bold leading-none pb-6"
+              className="pb-6 font-serif font-bold leading-none [@media(min-width:1024px)_and_(max-height:900px)]:pb-1!"
               style={{ fontSize: "clamp(3.8rem, 12vw, 8rem)", color: "#1a3060", letterSpacing: "-0.02em", textShadow: "0 6px 36px rgba(26,48,96,0.13)" }}
             >
               29
@@ -294,7 +309,7 @@ export default function HeroSection() {
         </motion.p>
 
         {/* ── RSVP CTA: hierarchy 3 ── */}
-        <div className="mt-10 lg:mt-5">
+        <div className="mt-10 lg:mt-5 [@media(min-width:1024px)_and_(max-height:900px)]:mt-3">
           <RsvpButton />
         </div>
 

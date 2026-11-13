@@ -48,14 +48,18 @@ export function AttireCategoryCard({ category, index, gridClassName = "" }: Atti
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-white sm:aspect-[5/4]">
         {hasImage ? (
-          <Image
-            src={category.imageSrc as string}
-            alt={category.imageAlt ?? category.title}
-            fill
-            className="object-contain object-center"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            quality={85}
-          />
+          <div className="absolute inset-0 flex flex-col pt-2">
+            <div className="relative min-h-0 w-full flex-1">
+              <Image
+                src={category.imageSrc as string}
+                alt={category.imageAlt ?? category.title}
+                fill
+                className="object-contain object-center"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                quality={85}
+              />
+            </div>
+          </div>
         ) : (
           <PalettePlaceholder palette={category.palette} />
         )}

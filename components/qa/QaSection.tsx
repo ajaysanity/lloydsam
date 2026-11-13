@@ -34,7 +34,7 @@ const QA_ITEMS = [
   {
     question: "When do I need to RSVP?",
     answer:
-      "Kindly confirm your presence on or before December 15, 2026 through this website, or message us on Facebook.",
+      "Kindly confirm your presence on or before December 01, 2026 through this website, or message us on Facebook.",
   },
   {
     question: "Can we take photos during the wedding?",
@@ -283,7 +283,7 @@ export default function QaSection() {
                 className="mx-auto mt-4 max-w-md font-sans text-sm leading-relaxed md:text-base lg:mx-0"
                 style={{ color: "var(--text-muted)" }}
               >
-                Kindly confirm your presence on or before December 15, 2026 through this website, or message us on
+                Kindly confirm your presence on or before December 01, 2026 through this website, or message us on
                 Facebook.
               </p>
             </motion.div>

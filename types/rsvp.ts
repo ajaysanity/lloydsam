@@ -6,4 +6,4 @@ export type RsvpFormState = {
 
 export const rsvpInitialState: RsvpFormState = { ok: false, error: null };
 
-export const MAX_ADDITIONAL_GUESTS = 3;
+export const MAX_ADDITIONAL_GUESTS = 1;

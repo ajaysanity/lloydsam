@@ -47,6 +47,10 @@ function IconBackground() {
 const CEREMONY_COORDS: [number, number] = [121.068422, 12.3541661];
 const RECEPTION_COORDS: [number, number] = [121.0421711, 12.3599564];
 
+function toGoogleMapsUrl(label: string, address: string) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${label}, ${address}`)}`;
+}
+
 /* ── Map modal ──────────────────────────────────────────────── */
 interface MapModalProps {
   label: string;
@@ -270,13 +274,13 @@ export default function EventDetails() {
       label: "St. Joseph Cathedral Parish",
       coords: CEREMONY_COORDS,
       address: "San Jose, Occidental Mindoro",
-      mapsUrl: "https://www.google.com/maps/place/St.+Joseph+the+Worker+Cathedral/@12.3541661,121.068422,17z",
+      mapsUrl: toGoogleMapsUrl("St. Joseph Cathedral Parish", "San Jose, Occidental Mindoro"),
     },
     reception: {
       label: "Grandiya Venue and Restaurant",
       coords: RECEPTION_COORDS,
       address: "Aroma Center, Gate 1, San Roque, San Jose, Occidental Mindoro",
-      mapsUrl: "https://www.google.com/maps/place/Grandiya+Venue+and+Restaurant/@12.3599564,121.0421711,17z",
+      mapsUrl: toGoogleMapsUrl("Grandiya Venue and Restaurant", "Aroma Center, Gate 1, San Roque, San Jose, Occidental Mindoro"),
     },
   };
 

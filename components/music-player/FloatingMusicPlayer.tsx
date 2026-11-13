@@ -4,10 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 
 const AUDIO_SRC = "/audio/kay_tagal_kitang_hinintay_spongecole.mp3";
+const START_AT = 3;
 
 function playAudible(el: HTMLAudioElement) {
   el.muted = false;
   el.volume = 0.65;
+  if (el.currentTime < START_AT) el.currentTime = START_AT;
   return el.play();
 }
 
@@ -36,8 +38,18 @@ export default function FloatingMusicPlayer() {
     const el = audioRef.current;
     if (!el) return;
 
-    const onTime = () => setCurrent(el.currentTime);
-    const onMeta = () => setDuration(el.duration || 0);
+    const onTime = () => {
+      if (el.currentTime < START_AT) {
+        el.currentTime = START_AT;
+        setCurrent(START_AT);
+        return;
+      }
+      setCurrent(el.currentTime);
+    };
+    const onMeta = () => {
+      setDuration(el.duration || 0);
+      if (el.currentTime < START_AT) el.currentTime = START_AT;
+    };
     const onEnded = () => setPlaying(false);
     const onPlay = () => setPlaying(true);
     const onPause = () => setPlaying(false);

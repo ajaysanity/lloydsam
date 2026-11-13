@@ -201,33 +201,27 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                     Additional guests
                   </label>
                   <p className="mb-2 font-sans text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                    Number of people attending with you (not including yourself). Use 0 if you are attending alone.
+                    You may bring a maximum of 1 guest (+1). Use 0 if you are attending alone.
                   </p>
-                  <input
+                  <select
                     id="rsvp-additional-guests"
                     name="additional_guests"
-                    type="number"
                     required
-                    min={0}
-                    max={MAX_ADDITIONAL_GUESTS}
                     value={additionalGuests}
                     onChange={(e) => {
-                      const v = e.target.value;
-                      if (v === "") {
-                        setAdditionalGuests(0);
-                        return;
-                      }
-                      const n = Number.parseInt(v, 10);
-                      if (!Number.isFinite(n)) return;
-                      setAdditionalGuests(Math.max(0, Math.min(MAX_ADDITIONAL_GUESTS, n)));
+                      const n = Number.parseInt(e.target.value, 10);
+                      setAdditionalGuests(Number.isFinite(n) ? Math.max(0, Math.min(MAX_ADDITIONAL_GUESTS, n)) : 0);
                     }}
                     aria-invalid={fieldError("additional_guests")}
-                    className={`${inputClassName} ${inputBorderClass("additional_guests")}`}
+                    className={`${inputClassName} appearance-none cursor-pointer ${inputBorderClass("additional_guests")}`}
                     style={{
                       background: "var(--blue-pale)",
                       color: "var(--text-dark)",
                     }}
-                  />
+                  >
+                    <option value={0}>0 — Attending alone</option>
+                    <option value={1}>1 — Plus one (+1)</option>
+                  </select>
                 </div>
               )}
 
