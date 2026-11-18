@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Flower2, Gem, Sparkles, Star, Camera, ImageIcon, Ribbon } from "lucide-react";
@@ -192,25 +193,38 @@ interface LightboxProps {
 }
 
 function Lightbox({ src, index, total, onClose, onPrev, onNext }: LightboxProps) {
-  return (
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-[80] flex items-center justify-center"
       style={{ background: "rgba(0,0,0,0.92)" }}
       onClick={onClose}
     >
       <button
-        className="absolute top-4 right-5 text-white text-3xl font-light leading-none hover:opacity-70 transition-opacity"
+        className="absolute top-3 right-4 z-20 text-white text-3xl font-light leading-none hover:opacity-70 transition-opacity"
         onClick={onClose}
         aria-label="Close"
       >
         ×
       </button>
       <button
-        className="absolute left-4 text-white text-4xl font-thin hover:opacity-70 transition-opacity z-10 p-2"
+        className="absolute left-2 z-20 text-white text-4xl font-thin hover:opacity-70 transition-opacity p-2 sm:left-4"
         onClick={(e) => { e.stopPropagation(); onPrev(); }}
         aria-label="Previous"
       >
@@ -222,22 +236,21 @@ function Lightbox({ src, index, total, onClose, onPrev, onNext }: LightboxProps)
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="relative max-w-5xl max-h-screen w-full mx-14 my-8"
+        className="relative h-[calc(100dvh-1rem)] w-[calc(100vw-0.75rem)]"
         onClick={(e) => e.stopPropagation()}
-        style={{ aspectRatio: "4/3" }}
       >
         <Image
           src={src}
           alt={`Wedding photo ${index + 1}`}
           fill
           className="object-contain"
-          sizes="90vw"
+          sizes="100vw"
           priority
         />
       </motion.div>
 
       <button
-        className="absolute right-4 text-white text-4xl font-thin hover:opacity-70 transition-opacity z-10 p-2"
+        className="absolute right-2 z-20 text-white text-4xl font-thin hover:opacity-70 transition-opacity p-2 sm:right-4"
         onClick={(e) => { e.stopPropagation(); onNext(); }}
         aria-label="Next"
       >
@@ -245,12 +258,13 @@ function Lightbox({ src, index, total, onClose, onPrev, onNext }: LightboxProps)
       </button>
 
       <div
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 font-sans text-xs tracking-widest"
-        style={{ color: "rgba(255,255,255,0.5)" }}
+        className="absolute bottom-3 left-1/2 z-20 -translate-x-1/2 font-sans text-xs tracking-widest"
+        style={{ color: "rgba(255,255,255,0.55)" }}
       >
         {index + 1} / {total}
       </div>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 }
 
