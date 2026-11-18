@@ -79,7 +79,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
               className="font-serif text-xs tracking-[0.3em] uppercase mb-2"
               style={{ color: "var(--gold-accent)" }}
             >
-              Kindly reply by on or before December 01, 2026
+              Kindly reply by on or before December 15, 2026
             </p>
             <h2
               className="font-script"
