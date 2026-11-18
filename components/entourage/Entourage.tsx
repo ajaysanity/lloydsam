@@ -261,7 +261,7 @@ export default function Entourage() {
             <NameList names={[
               "Lucille Mae Levantino",
               "Princess Jelian Mingao",
-              "Alexdra Nicole Abejo",
+              "Alexandra Nicole Abejo",
               "Crizia Harvey Lopez",
               "Grace Ann Enero",
               "Yhanie Mingao",
