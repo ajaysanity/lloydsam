@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Flower2, Gem, Sparkles, Star, Camera, ImageIcon, Ribbon } from "lucide-react";
+import FeaturedVideo from "@/components/gallery/FeaturedVideo";
 
 /* ── Scattered icon background ──────────────────────────────── */
 const BG_ICONS = [
@@ -193,18 +194,13 @@ interface LightboxProps {
 }
 
 function Lightbox({ src, index, total, onClose, onPrev, onNext }: LightboxProps) {
-  const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
-    setMounted(true);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = prev;
     };
   }, []);
-
-  if (!mounted) return null;
 
   return createPortal(
     <motion.div
@@ -378,6 +374,8 @@ export default function Gallery() {
             className="section-divider mt-6"
           />
         </div>
+
+        <FeaturedVideo />
 
         {/* Mobile: 2 columns */}
         <div className="grid grid-cols-2 gap-3 md:hidden">

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
+import { BG_MUSIC_PAUSE_EVENT, BG_MUSIC_RESUME_EVENT } from "@/lib/background-music";
 
 const AUDIO_SRC = "/audio/kay_tagal_kitang_hinintay_spongecole.mp3";
 const START_AT = 12;
@@ -21,6 +22,8 @@ export default function FloatingMusicPlayer() {
   const [loadError, setLoadError] = useState(false);
   const progressRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<HTMLDivElement>(null);
+  const suppressedRef = useRef(false);
+  const resumeAfterRef = useRef(false);
 
   const pct = duration > 0 ? (current / duration) * 100 : 0;
 
@@ -71,6 +74,8 @@ export default function FloatingMusicPlayer() {
     };
 
     const onGesture = (event: Event) => {
+      if (suppressedRef.current) return;
+      if (event.target instanceof Element && event.target.closest("[data-bg-music-exempt]")) return;
       if (event.target instanceof Node && playerRef.current?.contains(event.target)) return;
       void playAudible(el).then(disarm).catch(() => {});
     };
@@ -82,6 +87,7 @@ export default function FloatingMusicPlayer() {
     };
 
     const tryAutoplay = () => {
+      if (suppressedRef.current) return;
       if (!el.paused && !el.muted) return;
       void playAudible(el)
         .then(disarm)
@@ -92,10 +98,28 @@ export default function FloatingMusicPlayer() {
         });
     };
 
+    const onPauseRequest = () => {
+      if (suppressedRef.current) return;
+      suppressedRef.current = true;
+      resumeAfterRef.current = !el.paused && !el.muted;
+      el.pause();
+    };
+
+    const onResumeRequest = () => {
+      if (!suppressedRef.current) return;
+      suppressedRef.current = false;
+      if (resumeAfterRef.current) void playAudible(el).catch(() => {});
+      resumeAfterRef.current = false;
+    };
+
     tryAutoplay();
     el.addEventListener("canplay", tryAutoplay);
+    window.addEventListener(BG_MUSIC_PAUSE_EVENT, onPauseRequest);
+    window.addEventListener(BG_MUSIC_RESUME_EVENT, onResumeRequest);
 
     return () => {
+      window.removeEventListener(BG_MUSIC_PAUSE_EVENT, onPauseRequest);
+      window.removeEventListener(BG_MUSIC_RESUME_EVENT, onResumeRequest);
       el.removeEventListener("timeupdate", onTime);
       el.removeEventListener("loadedmetadata", onMeta);
       el.removeEventListener("ended", onEnded);
