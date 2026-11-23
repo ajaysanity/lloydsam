@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useActionState } from "react";
+import { useState, useEffect, useCallback, useActionState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { submitRsvp } from "@/app/actions/submit-rsvp";
 import { rsvpInitialState } from "@/types/rsvp";
@@ -21,16 +21,46 @@ function SubmitButton({ pending }: { pending: boolean }) {
 const inputClassName =
   "w-full px-4 py-3 text-sm font-sans outline-none transition-colors duration-200 rounded-sm";
 
+function RequiredNote({ show, id }: { show: boolean; id: string }) {
+  if (!show) return null;
+  return (
+    <p id={id} className="mt-1.5 font-sans text-xs text-red-600" role="alert">
+      Required
+    </p>
+  );
+}
+
 function RsvpModal({ onClose }: { onClose: () => void }) {
   const [state, formAction, isPending] = useActionState(submitRsvp, rsvpInitialState);
   const showSuccess = state.ok;
   const [attendance, setAttendance] = useState("");
+  const [clientErrors, setClientErrors] = useState<ReadonlySet<string>>(new Set());
   const errorFields = new Set(state.errorFields ?? []);
-  const fieldError = (key: string) => errorFields.has(key);
+  const fieldError = (key: string) => errorFields.has(key) || clientErrors.has(key);
   const inputBorderClass = (key: string) =>
     fieldError(key)
       ? "border-2 border-red-600 focus:border-red-600"
       : "border border-[rgba(59,110,165,0.25)] focus:border-[var(--blue-primary)]";
+
+  function clearClientError(key: string) {
+    setClientErrors((prev) => {
+      if (!prev.has(key)) return prev;
+      const next = new Set(prev);
+      next.delete(key);
+      return next;
+    });
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    const data = new FormData(event.currentTarget);
+    const next = new Set<string>();
+    if (!String(data.get("full_name") ?? "").trim()) next.add("full_name");
+    const attendanceValue = String(data.get("attendance") ?? "");
+    if (attendanceValue !== "yes" && attendanceValue !== "no") next.add("attendance");
+    if (!String(data.get("message") ?? "").trim()) next.add("message");
+    setClientErrors(next);
+    if (next.size > 0) event.preventDefault();
+  }
 
   return (
     <motion.div
@@ -123,7 +153,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
               </button>
             </motion.div>
           ) : (
-            <form action={formAction} className="space-y-5">
+            <form action={formAction} noValidate onSubmit={handleSubmit} className="space-y-5">
               {state.error ? (
                 <p className="font-sans text-sm text-red-700 text-center" role="alert">
                   {state.error}
@@ -144,13 +174,18 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                   type="text"
                   required
                   placeholder="Your full name"
+                  onChange={(event) => {
+                    if (event.target.value.trim()) clearClientError("full_name");
+                  }}
                   aria-invalid={fieldError("full_name")}
+                  aria-describedby={clientErrors.has("full_name") ? "rsvp-full-name-error" : undefined}
                   className={`${inputClassName} ${inputBorderClass("full_name")}`}
                   style={{
                     background: "var(--blue-pale)",
                     color: "var(--text-dark)",
                   }}
                 />
+                <RequiredNote show={clientErrors.has("full_name")} id="rsvp-full-name-error" />
               </div>
 
               <div>
@@ -166,8 +201,12 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                   name="attendance"
                   required
                   value={attendance}
-                  onChange={(e) => setAttendance(e.target.value)}
+                  onChange={(e) => {
+                    setAttendance(e.target.value);
+                    if (e.target.value === "yes" || e.target.value === "no") clearClientError("attendance");
+                  }}
                   aria-invalid={fieldError("attendance")}
+                  aria-describedby={clientErrors.has("attendance") ? "rsvp-attendance-error" : undefined}
                   className={`${inputClassName} appearance-none cursor-pointer ${inputBorderClass("attendance")}`}
                   style={{
                     background: "var(--blue-pale)",
@@ -180,6 +219,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                   <option value="yes">Joyfully accepts</option>
                   <option value="no">Regretfully declines</option>
                 </select>
+                <RequiredNote show={clientErrors.has("attendance")} id="rsvp-attendance-error" />
               </div>
 
               <input type="hidden" name="additional_guests" value="0" />
@@ -221,20 +261,26 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                   style={{ color: "var(--text-muted)" }}
                   htmlFor="rsvp-message"
                 >
-                  Message (Optional)
+                  Message *
                 </label>
                 <textarea
                   id="rsvp-message"
                   name="message"
                   rows={3}
+                  required
                   placeholder="Share a message with the couple..."
+                  onChange={(event) => {
+                    if (event.target.value.trim()) clearClientError("message");
+                  }}
                   aria-invalid={fieldError("message")}
+                  aria-describedby={clientErrors.has("message") ? "rsvp-message-error" : undefined}
                   className={`${inputClassName} resize-none ${inputBorderClass("message")}`}
                   style={{
                     background: "var(--blue-pale)",
                     color: "var(--text-dark)",
                   }}
                 />
+                <RequiredNote show={clientErrors.has("message")} id="rsvp-message-error" />
               </div>
 
               <SubmitButton pending={isPending} />

@@ -88,13 +88,16 @@ export async function submitRsvp(
     }
   }
 
-  let message: string | null = null;
-  if (typeof messageRaw === "string") {
-    const t = messageRaw.trim();
-    if (t.length > MAX_MESSAGE) {
-      return { ok: false, error: "Message is too long.", errorFields: ["message"] };
-    }
-    message = t.length > 0 ? t : null;
+  if (typeof messageRaw !== "string") {
+    return { ok: false, error: "Please enter a message.", errorFields: ["message"] };
+  }
+
+  const message = messageRaw.trim();
+  if (!message) {
+    return { ok: false, error: "Please enter a message.", errorFields: ["message"] };
+  }
+  if (message.length > MAX_MESSAGE) {
+    return { ok: false, error: "Message is too long.", errorFields: ["message"] };
   }
 
   try {
@@ -103,7 +106,7 @@ export async function submitRsvp(
       p_full_name: full_name,
       p_guest_count: guest_count,
       p_attendance: attendanceRaw,
-      p_message: message ?? "",
+      p_message: message,
       p_guest_names: guest_names,
     });
 
